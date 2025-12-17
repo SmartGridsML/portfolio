@@ -19,10 +19,3 @@ My work focuses on:
 - Model deployment and cloud infrastructure
 - Applied research and experimentation
 
-## Featured Projects
-
-Each project page describes:
-- the problem
-- the system architecture
-- key technical decisions
-- links to code and demos
