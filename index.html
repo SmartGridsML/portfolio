@@ -8,55 +8,65 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
+  <div class="container">
+    <header>
+      <h1 class="hero-title">Bilal Saleem</h1>
+      <p class="hero-subtitle">
+        Software Engineer & Machine Learning Engineer building
+        production-grade ML systems, APIs, and data pipelines.
+      </p>
 
-<header>
-  <h1>Bilal Saleem</h1>
-  <p>Software Engineer & Machine Learning Engineer</p>
-  <p>
-    I design and build production-grade machine learning systems,
-    backend APIs, and data pipelines.
-  </p>
-</header>
+      <div class="hero-tags">
+        <span>Python</span>
+        <span>FastAPI</span>
+        <span>Machine Learning</span>
+        <span>AWS</span>
+        <span>MLOps</span>
+      </div>
+    </header>
 
-<section>
-  <h2>What I Do</h2>
-  <ul>
-    <li>End-to-end ML systems (training → deployment)</li>
-    <li>FastAPI services for model inference</li>
-    <li>Cloud deployment (AWS, Docker, CI/CD)</li>
-    <li>Applied research & experimentation</li>
-  </ul>
-</section>
+    <section>
+      <h2>What I Do</h2>
+      <ul>
+        <li>End-to-end ML systems (training → deployment)</li>
+        <li>FastAPI services for model inference</li>
+        <li>Cloud deployment (AWS, Docker, CI/CD)</li>
+        <li>Applied research & experimentation</li>
+      </ul>
+    </section>
 
-<section>
-  <h2>Selected Projects</h2>
+    <section>
+      <h2>Selected Projects</h2>
 
-  <div class="project">
-    <h3>Tennis Match Prediction System</h3>
-    <p>
-      End-to-end ML pipeline with feature engineering, XGBoost model,
-      FastAPI inference service, and AWS Lambda deployment.
-    </p>
-    <a href="projects/tennis-ml.html">View project</a>
+      <div class="projects-grid">
+        <div class="project-card fade-in">
+          <h3>Tennis Match Prediction System</h3>
+          <p>
+            End-to-end ML pipeline with feature engineering, XGBoost model,
+            FastAPI inference service, and AWS Lambda deployment.
+          </p>
+          <a href="projects/tennis-ml.html">View project</a>
+        </div>
+
+        <div class="project-card fade-in">
+          <h3>Reinforcement Learning for Ship Routing</h3>
+          <p>
+            MSc thesis project implementing DDQN and DDPG for maritime route
+            optimisation using parallelised grid environments.
+          </p>
+          <a href="projects/rl-routing.html">View project</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>
+        GitHub: <a href="https://github.com/SmartGridsML">SmartGridsML</a> |
+        LinkedIn: <a href="https://www.linkedin.com/in/bilal-saleem-0379b0101/">Bilal Saleem</a>
+      </p>
+    </footer>
   </div>
 
-  <div class="project">
-    <h3>Reinforcement Learning for Ship Routing</h3>
-    <p>
-      MSc thesis project implementing DDQN and DDPG for maritime route
-      optimisation using parallelised grid environments.
-    </p>
-    <a href="projects/rl-routing.html">View project</a>
-  </div>
-
-</section>
-
-<footer>
-  <p>
-    GitHub: <a href="https://github.com/SmartGridsML">SmartGridsML</a> |
-    LinkedIn: <a href="https://www.linkedin.com/in/bilal-saleem-0379b0101/">Bilal Saleem</a>
-  </p>
-</footer>
-
+  <script src="js/main.js"></script>
 </body>
 </html>

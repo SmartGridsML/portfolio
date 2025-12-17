@@ -8,64 +8,64 @@
   <link rel="stylesheet" href="../css/styles.css" />
 </head>
 <body>
+  <div class="container">
+    <header>
+      <p><a href="../index.html">← Back to portfolio</a></p>
+      <h1>Reinforcement Learning for Ship Routing</h1>
+    </header>
 
-<header>
-  <h1>Reinforcement Learning for Ship Routing</h1>
-  <p><a href="../index.html">← Back to portfolio</a></p>
-</header>
+    <section>
+      <p>
+        MSc Computer Science thesis project exploring deep reinforcement learning
+        approaches for maritime route optimization. The system learns optimal
+        routing policies considering weather conditions, fuel efficiency, and
+        time constraints.
+      </p>
+    </section>
 
-<section>
-  <p>
-    MSc Computer Science thesis project exploring deep reinforcement learning
-    approaches for maritime route optimization. The system learns optimal
-    routing policies considering weather conditions, fuel efficiency, and
-    time constraints.
-  </p>
-</section>
+    <section>
+      <h2>System Overview</h2>
+      <ul>
+        <li>Custom grid-based maritime environment simulation</li>
+        <li>DDQN (Double Deep Q-Network) implementation</li>
+        <li>DDPG (Deep Deterministic Policy Gradient) for continuous action spaces</li>
+        <li>Parallelised training infrastructure for faster convergence</li>
+      </ul>
+    </section>
 
-<section>
-  <h2>System Overview</h2>
-  <ul>
-    <li>Custom grid-based maritime environment simulation</li>
-    <li>DDQN (Double Deep Q-Network) implementation</li>
-    <li>DDPG (Deep Deterministic Policy Gradient) for continuous action spaces</li>
-    <li>Parallelised training infrastructure for faster convergence</li>
-  </ul>
-</section>
+    <section>
+      <h2>Key Technical Decisions</h2>
+      <ul>
+        <li>Designed discretised grid environment balancing realism and computational efficiency</li>
+        <li>Implemented experience replay and target networks for stable learning</li>
+        <li>Used parallel environment instances to accelerate training</li>
+        <li>Compared value-based (DDQN) vs policy-based (DDPG) approaches</li>
+      </ul>
+    </section>
 
-<section>
-  <h2>Key Technical Decisions</h2>
-  <ul>
-    <li>Designed discretised grid environment balancing realism and computational efficiency</li>
-    <li>Implemented experience replay and target networks for stable learning</li>
-    <li>Used parallel environment instances to accelerate training</li>
-    <li>Compared value-based (DDQN) vs policy-based (DDPG) approaches</li>
-  </ul>
-</section>
+    <section>
+      <h2>Results</h2>
+      <p>
+        The trained agents successfully learned to navigate complex maritime
+        scenarios, reducing route time by 15-20% compared to baseline heuristics
+        while maintaining safety constraints.
+      </p>
+    </section>
 
-<section>
-  <h2>Results</h2>
-  <p>
-    The trained agents successfully learned to navigate complex maritime
-    scenarios, reducing route time by 15-20% compared to baseline heuristics
-    while maintaining safety constraints.
-  </p>
-</section>
+    <section>
+      <h2>Links</h2>
+      <p>
+        <a href="https://github.com/SmartGridsML" target="_blank">View source code on GitHub</a>
+      </p>
+    </section>
 
-<section>
-  <h2>Links</h2>
-  <p>
-    <a href="https://github.com/SmartGridsML" target="_blank">View source code on GitHub</a>
-  </p>
-</section>
-
-<footer>
-  <p>
-    <a href="../index.html">Home</a> |
-    <a href="https://github.com/SmartGridsML">GitHub</a> |
-    <a href="https://www.linkedin.com/in/bilal-saleem-0379b0101/">LinkedIn</a>
-  </p>
-</footer>
-
+    <footer>
+      <p>
+        <a href="../index.html">Home</a> |
+        <a href="https://github.com/SmartGridsML">GitHub</a> |
+        <a href="https://www.linkedin.com/in/bilal-saleem-0379b0101/">LinkedIn</a>
+      </p>
+    </footer>
+  </div>
 </body>
 </html>
