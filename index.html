@@ -3,76 +3,249 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bilal Saleem — Software & ML Engineer</title>
-  <meta name="description" content="Software Engineer and Machine Learning Engineer specialising in production ML systems, APIs, and data pipelines." />
+  <title>Bilal Saleem</title>
+  <meta name="description" content="Software Engineer and Machine Learning Engineer specialising in production ML systems, AI agents, and data pipelines." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=Syne:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1 class="hero-title">Bilal Saleem</h1>
-      <p class="hero-subtitle">
-        Software Engineer & Machine Learning Engineer building
-        production-grade ML systems, APIs, and data pipelines.
+
+  <nav class="site-nav">
+    <a href="#" class="nav-name">Bilal Saleem</a>
+    <div class="nav-links">
+      <a href="#projects">PROJECTS</a>
+      <a href="#building">BUILDING</a>
+      <a href="#about">ABOUT</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <p class="hero-eyebrow">HI, I'M</p>
+      <h1 class="hero-name">Bilal Saleem</h1>
+      <p class="hero-bio">
+        Software &amp; Machine Learning Engineer.<br />
+        Building production ML systems, AI agents, and data pipelines.<br />
+        MSc Computational Science · Imperial College London.
       </p>
-
-      <div class="hero-tags">
-        <span>Backend Development</span>
-        <span>Machine Learning</span>
-        <span>Data Science</span>
-        <span>Cloud Computing</span>
-        <span>MLOps</span>
-      </div>
-
-      <p style="margin-top: 1.5rem;">
-        <a href="cv.html" style="font-weight: 600;">View CV →</a>
-        <span style="color: var(--text-secondary); margin: 0 0.5rem;">or</span>
-        <a href="assets/cv/BilalSaleem_CV26.pdf" download style="font-weight: 600;">Download PDF</a>
-      </p>
-    </header>
-
-    <section>
-      <h2>What I Do</h2>
-      <ul>
-        <li>End-to-end ML systems (training → deployment)</li>
-        <li>FastAPI services for model inference</li>
-        <li>Cloud deployment (AWS, Docker, CI/CD)</li>
-        <li>Applied Research & Experimentation</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>Selected Projects</h2>
-
-      <div class="projects-grid">
-        <!-- <div class="project-card fade-in">
-          <h3>Tennis Match Prediction System</h3>
-          <p>
-            End-to-end ML pipeline with feature engineering, XGBoost model,
-            FastAPI inference service, and AWS Lambda deployment.
-          </p>
-          <a href="projects/tennis-ml.html">View project</a> -->
-        </div>
-
-        <div class="project-card fade-in">
-          <h3>Reinforcement Learning for Ship Routing - Summer 2025</h3>
-          <p>
-            MSc Thesis project implementing DDQN and DDPG for maritime route
-            optimisation using parallelised grid environments.
-          </p>
-          <a href="projects/rl-routing.html">View project</a>
-        </div>
+      <div class="hero-links">
+        <a href="https://github.com/SmartGridsML" target="_blank" rel="noopener">GITHUB</a>
+        <a href="https://www.linkedin.com/in/bilal-saleem-0379b0101/" target="_blank" rel="noopener">LINKEDIN</a>
+        <a href="cv.html">CV</a>
+        <a href="assets/cv/BilalSaleem_CV26.pdf" download>DOWNLOAD PDF</a>
       </div>
     </section>
 
-    <footer>
-      <p>
-        <a href="cv.html">CV</a> |
-        <a href="https://github.com/SmartGridsML">GitHub</a> |
-        <a href="https://www.linkedin.com/in/bilal-saleem-0379b0101/">LinkedIn</a>
+    <!-- PROJECTS -->
+    <section id="projects" class="content-section">
+      <h2 class="section-label">PROJECTS</h2>
+
+      <div class="project-item">
+        <div class="project-header">
+          <h3><a href="projects/rl-routing.html">Reinforcement Learning for Ship Routing</a></h3>
+          <span class="project-meta">MSc Thesis · 2025</span>
+        </div>
+        <p>Implements DDQN and DDPG agents for maritime route optimisation using parallelised grid environments. Explores multi-objective reward shaping for fuel and time trade-offs.</p>
+        <div class="tags">
+          <span>DDQN</span><span>DDPG</span><span>MARITIME</span><span>REINFORCEMENT LEARNING</span><span>MSC THESIS</span>
+        </div>
+        <div class="project-links">
+          <a href="projects/rl-routing.html">VIEW PROJECT →</a>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-header">
+          <h3><a href="https://github.com/SmartGridsML/GeminiLiveAgentHack" target="_blank" rel="noopener">PitchMirror</a></h3>
+          <span class="project-meta">Hackathon · 2025</span>
+        </div>
+        <p>Real-time multimodal speaking coach that sees your camera and slides, hears your delivery, and interrupts with evidence-backed feedback so every talk lands.</p>
+        <div class="tags">
+          <span>MULTIMODAL</span><span>GEMINI</span><span>REAL-TIME</span><span>AI AGENT</span><span>PYTHON</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/SmartGridsML/GeminiLiveAgentHack" target="_blank" rel="noopener">GITHUB →</a>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-header">
+          <h3><a href="https://github.com/SmartGridsML/genai_project" target="_blank" rel="noopener">CV &amp; Cover Letter Tailor</a></h3>
+          <span class="project-meta">2025</span>
+        </div>
+        <p>Tailors your CV and covering letter to match a target job description using generative AI, increasing your chances of landing a role.</p>
+        <div class="tags">
+          <span>GPT</span><span>LANGCHAIN</span><span>PYTHON</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/SmartGridsML/genai_project" target="_blank" rel="noopener">GITHUB →</a>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-header">
+          <h3><a href="https://github.com/SmartGridsML/RAGtutorials" target="_blank" rel="noopener">RAG Document Q&amp;A</a></h3>
+          <span class="project-meta">2024</span>
+        </div>
+        <p>Streamlit app enabling question answering over custom documents using retrieval-augmented generation with LLMs.</p>
+        <div class="tags">
+          <span>RAG</span><span>STREAMLIT</span><span>LLM</span><span>PYTHON</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/SmartGridsML/RAGtutorials" target="_blank" rel="noopener">GITHUB →</a>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-header">
+          <h3><a href="https://github.com/SmartGridsML/RealTime_NewsSearchEngine" target="_blank" rel="noopener">Real-Time News Search Engine</a></h3>
+          <span class="project-meta">2024</span>
+        </div>
+        <p>Python-based real-time news search engine for fast retrieval and indexing of live news articles.</p>
+        <div class="tags">
+          <span>PYTHON</span><span>SEARCH</span><span>NLP</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/SmartGridsML/RealTime_NewsSearchEngine" target="_blank" rel="noopener">GITHUB →</a>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-header">
+          <h3><a href="https://github.com/SmartGridsML/automation_work" target="_blank" rel="noopener">AI Paper Summarizer</a></h3>
+          <span class="project-meta">2025</span>
+        </div>
+        <p>Automated pipeline using GPT-3 to summarise AI research papers at scale, surfacing key findings fast.</p>
+        <div class="tags">
+          <span>GPT-3</span><span>OPENAI</span><span>AUTOMATION</span><span>PYTHON</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/SmartGridsML/automation_work" target="_blank" rel="noopener">GITHUB →</a>
+        </div>
+      </div>
+
+      <div class="project-item">
+        <div class="project-header">
+          <h3><a href="https://github.com/SmartGridsML/MLOpsMastery" target="_blank" rel="noopener">MLOps Mastery</a></h3>
+          <span class="project-meta">2025</span>
+        </div>
+        <p>Hands-on MLOps learning project covering model versioning, CI/CD pipelines, monitoring, and production deployment patterns.</p>
+        <div class="tags">
+          <span>MLOPS</span><span>CI/CD</span><span>PYTHON</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/SmartGridsML/MLOpsMastery" target="_blank" rel="noopener">GITHUB →</a>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- BUILDING -->
+    <section id="building" class="content-section">
+      <h2 class="section-label">BUILDING</h2>
+      <p class="section-sub">Hackathons &amp; experiments.</p>
+
+      <div class="building-grid">
+
+        <div class="building-item">
+          <div class="building-top">
+            <h4><a href="https://github.com/SmartGridsML/mcp1stbirthday_hack" target="_blank" rel="noopener">MCP 1st Birthday Hack</a></h4>
+            <span class="building-year">2025</span>
+          </div>
+          <p>Hackathon project for the MCP 1st Birthday challenge on Hugging Face.</p>
+          <div class="tags"><span>MCP</span><span>PYTHON</span></div>
+        </div>
+
+        <div class="building-item">
+          <div class="building-top">
+            <h4><a href="https://github.com/SmartGridsML/aws_supplychain_agent_hackathon" target="_blank" rel="noopener">AWS Supply Chain Agent</a></h4>
+            <span class="building-year">2025</span>
+          </div>
+          <p>AI agent for supply chain optimisation built during an AWS hackathon.</p>
+          <div class="tags"><span>AWS</span><span>AI AGENT</span><span>PYTHON</span></div>
+        </div>
+
+        <div class="building-item">
+          <div class="building-top">
+            <h4><a href="https://github.com/SmartGridsML/dangflow" target="_blank" rel="noopener">Dangflow</a></h4>
+            <span class="building-year">2025</span>
+          </div>
+          <p>Visual AI workflow automation built at the Langflow hackathon.</p>
+          <div class="tags"><span>LANGFLOW</span><span>PYTHON</span></div>
+        </div>
+
+        <div class="building-item">
+          <div class="building-top">
+            <h4><a href="https://github.com/SmartGridsML/elasticHack" target="_blank" rel="noopener">ElasticHack</a></h4>
+            <span class="building-year">2025</span>
+          </div>
+          <p>Elasticsearch devpost hackathon entry exploring intelligent search.</p>
+          <div class="tags"><span>ELASTICSEARCH</span><span>SEARCH</span></div>
+        </div>
+
+        <div class="building-item">
+          <div class="building-top">
+            <h4><a href="https://github.com/SmartGridsML/replit_buildathon" target="_blank" rel="noopener">Replit Buildathon</a></h4>
+            <span class="building-year">2026</span>
+          </div>
+          <p>TypeScript project built during the Replit Buildathon.</p>
+          <div class="tags"><span>TYPESCRIPT</span><span>REPLIT</span></div>
+        </div>
+
+        <div class="building-item">
+          <div class="building-top">
+            <h4><a href="https://github.com/SmartGridsML/vibe-video" target="_blank" rel="noopener">Vibe Video</a></h4>
+            <span class="building-year">2025</span>
+          </div>
+          <p>iOS video app built in Swift.</p>
+          <div class="tags"><span>SWIFT</span><span>IOS</span></div>
+        </div>
+
+        <div class="building-item">
+          <div class="building-top">
+            <h4><a href="https://github.com/SmartGridsML/gemini3hack" target="_blank" rel="noopener">Gemini 3 Hack</a></h4>
+            <span class="building-year">2025</span>
+          </div>
+          <p>Hackathon project built around the Gemini 3 model release.</p>
+          <div class="tags"><span>GEMINI</span><span>AI</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="content-section">
+      <h2 class="section-label">ABOUT</h2>
+      <p class="about-text">
+        ML engineer with end-to-end ownership of production AI systems spanning real-time speech processing, reinforcement learning, and NLP classification pipelines. MSc Computational Science at Imperial College London (2025, Home Student Scholarship).
       </p>
-    </footer>
-  </div>
+      <p class="about-text">
+        Previously at IBM and Northrop Grumman. Specialises in evaluation-driven model behaviour improvement, streaming inference architecture, and deploying research-grade systems to production on AWS.
+      </p>
+      <div class="about-tags">
+        <span>REINFORCEMENT LEARNING</span>
+        <span>LLM AGENTS</span>
+        <span>MLOPS</span>
+        <span>CLOUD</span>
+        <span>FASTAPI</span>
+        <span>PYTHON</span>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 Bilal Saleem. All rights reserved. · Last updated May 2026</p>
+    <div class="footer-links">
+      <a href="cv.html">CV</a>
+      <a href="https://github.com/SmartGridsML" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/bilal-saleem-0379b0101/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
 
   <script src="js/main.js"></script>
 </body>

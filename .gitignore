@@ -1,0 +1,13 @@
+*.DS_Store
+# Ignore build files
+/build/
+/dist/
+/node_modules/
+# Ignore log files/logs/
+/*.log
+logs/
+# Ignore environment variable files
+.env
+.env.local
+.env.development.local
+.claude/
