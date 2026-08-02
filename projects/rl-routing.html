@@ -3,69 +3,434 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Reinforcement Learning for Ship Routing — Bilal Saleem</title>
-  <meta name="description" content="MSc thesis implementing DDQN and DDPG for maritime route optimization using parallelised grid environments." />
+  <title>Deep RL for Maritime Route Optimisation — Bilal Saleem</title>
+  <meta name="description" content="MSc IRP at Imperial College London. DDQN agent on an adaptive H3 hexagonal grid for Mediterranean route optimisation. Presented at RLSS 2026, Milan." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=Syne:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    /* Project page layout */
+    .project-page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .project-page-nav {
+      padding: 1.75rem 0 0;
+      margin-bottom: 3rem;
+    }
+
+    .project-page-nav a {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      transition: color 0.15s;
+    }
+
+    .project-page-nav a:hover {
+      color: var(--text);
+    }
+
+    .project-page-header {
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 3rem;
+    }
+
+    .project-page-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .project-page-eyebrow .badge {
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      padding: 0.2rem 0.55rem;
+      border-radius: 3px;
+      font-size: 0.65rem;
+    }
+
+    .project-page-title {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+    }
+
+    .project-page-subtitle {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 58ch;
+      margin-bottom: 1.75rem;
+    }
+
+    .project-page-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.5rem;
+    }
+
+    .project-page-links a {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1px;
+      transition: border-color 0.15s;
+    }
+
+    .project-page-links a:hover {
+      border-bottom-color: var(--text);
+    }
+
+    /* Sections */
+    .pp-section {
+      margin-bottom: 2.75rem;
+      padding-bottom: 2.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .pp-section:last-of-type {
+      border-bottom: none;
+    }
+
+    .pp-section h2 {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .pp-section p {
+      font-size: 0.93rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 60ch;
+      margin-bottom: 0.85rem;
+    }
+
+    .pp-section p:last-child {
+      margin-bottom: 0;
+    }
+
+    .pp-section ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .pp-section ul li {
+      font-size: 0.93rem;
+      color: var(--muted);
+      line-height: 1.7;
+      padding: 0.35rem 0;
+      padding-left: 1rem;
+      position: relative;
+    }
+
+    .pp-section ul li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      font-size: 0.8rem;
+      color: var(--border);
+    }
+
+    /* Stat row */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-cell {
+      padding: 1.25rem 1rem;
+      border-right: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .stat-cell:last-child {
+      border-right: none;
+    }
+
+    .stat-num {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    /* PDF embed */
+    .poster-embed {
+      margin-top: 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      background: #f0f0ec;
+    }
+
+    .poster-embed iframe {
+      display: block;
+      width: 100%;
+      height: 480px;
+      border: none;
+    }
+
+    .poster-fallback {
+      display: none;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .poster-caption {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .poster-caption span {
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    .poster-caption a {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1px;
+      transition: border-color 0.15s;
+    }
+
+    .poster-caption a:hover {
+      border-bottom-color: var(--text);
+    }
+
+    /* Tags */
+    .pp-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 1rem;
+    }
+
+    .pp-tags span {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--tag-text);
+      background: var(--tag-bg);
+      padding: 0.25rem 0.6rem;
+      border-radius: 3px;
+    }
+
+    @media (max-width: 640px) {
+      .project-page {
+        padding: 0 1.25rem;
+      }
+
+      .stat-row {
+        grid-template-columns: 1fr;
+      }
+
+      .stat-cell {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        text-align: left;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+      }
+
+      .stat-cell:last-child {
+        border-bottom: none;
+      }
+
+      .stat-num {
+        font-size: 1.5rem;
+        margin-bottom: 0;
+      }
+
+      .poster-embed iframe {
+        height: 320px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <p><a href="../index.html">← Back to portfolio</a></p>
-      <h1>Reinforcement Learning for Ship Routing</h1>
+
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-name">Bilal Saleem</a>
+    <div class="nav-links">
+      <a href="../index.html#projects">PROJECTS</a>
+      <a href="../index.html#building">BUILDING</a>
+      <a href="../index.html#about">ABOUT</a>
+    </div>
+  </nav>
+
+  <div class="project-page">
+
+    <div class="project-page-nav">
+      <a href="../index.html">← Back to portfolio</a>
+    </div>
+
+    <header class="project-page-header">
+      <div class="project-page-eyebrow">
+        <span>MSC IRP · IMPERIAL COLLEGE LONDON · 2025</span>
+        <span class="badge">RLSS 2026 · MILAN</span>
+      </div>
+      <h1 class="project-page-title">Deep RL for Maritime Route Optimisation: A Hexagonal Grid Approach</h1>
+      <p class="project-page-subtitle">
+        MSc thesis building a DDQN agent on an adaptive H3 hexagonal grid to navigate three Mediterranean
+        sea routes — eliminating the geometric artefacts of rectangular grids and enabling genuine
+        strait and canal navigation. Presented as a research poster at the Reinforcement Learning Summer
+        School (RLSS) 2026 at ELLIS Unit Milan.
+      </p>
+      <div class="project-page-links">
+        <a href="https://github.com/SmartGridsML" target="_blank" rel="noopener">GITHUB →</a>
+        <a href="../assets/rlss2026_poster_landscape.pdf" target="_blank">VIEW POSTER →</a>
+        <a href="../assets/rlss2026_poster_landscape.pdf" download>DOWNLOAD PDF →</a>
+      </div>
     </header>
 
-    <section>
+    <section class="pp-section">
+      <h2>RESULTS</h2>
+      <div class="stat-row">
+        <div class="stat-cell">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">MARSEILLE → PORT TORRES</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-num">99%</div>
+          <div class="stat-label">MARSEILLE → CAGLIARI</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">MARSEILLE → PIRAEUS</div>
+        </div>
+      </div>
       <p>
-        MSc Computer Science thesis project exploring deep reinforcement learning
-        approaches for maritime route optimization. The system learns optimal
-        routing policies considering weather conditions, fuel efficiency, and
-        time constraints.
+        All three Mediterranean routes solved. The long-route Piraeus problem (107 BFS hops) required
+        a BFS-seeded replay buffer to break the cold-start deadlock — without it, Q-values converge
+        to a uniform signal and the agent never leaves its starting region.
       </p>
     </section>
 
-    <section>
-      <h2>System Overview</h2>
+    <section class="pp-section">
+      <h2>THE PROBLEM</h2>
+      <p>
+        International shipping accounts for ~3% of global greenhouse gas emissions. The IMO's 2023
+        revised strategy targets net-zero by 2050. Voyage optimisation — choosing the most fuel-efficient
+        route through dynamic, weather-varying ocean conditions — is one of the most tractable near-term
+        levers available to fleet operators.
+      </p>
+      <p>
+        Classical methods (A*, Dijkstra, Tabu Search) plan once and cannot adapt mid-voyage. RL agents
+        learn a policy that updates online as new forecasts arrive. The state-of-the-art benchmark
+        (Latinopoulos et al., JMSE 2025) achieves 8.7–12.6% fuel savings using DDQN/DDPG on a
+        rectangular grid — but that grid has two structural limitations this project addresses.
+      </p>
+    </section>
+
+    <section class="pp-section">
+      <h2>THE INNOVATION: HEXAGONAL GRID</h2>
       <ul>
-        <li>Custom grid-based maritime environment simulation</li>
-        <li>DDQN (Double Deep Q-Network) implementation</li>
-        <li>DDPG (Deep Deterministic Policy Gradient) for continuous action spaces</li>
-        <li>Parallelised training infrastructure for faster convergence</li>
+        <li>Rectangular grids introduce a geometric artefact: diagonal steps are 41% longer than cardinal steps, forcing the Q-network to learn a geometry correction rather than navigational value.</li>
+        <li>H3 hexagonal grid: all 6 neighbours are equidistant — always. 6 actions, all equal cost. Q(s, "move NE") = Q(s, "move N") under equivalent progress.</li>
+        <li>Adaptive resolution: open ocean at res-5 (~28 km cell-to-cell), coastal zones at res-6 (~10 km), making the Strait of Bonifacio traversable and the Corinth Canal navigable end-to-end — no teleportation shortcuts.</li>
+        <li>Result: 10,937 water/coastal cells across the Mediterranean, with polygon-level (not centroid) land classification.</li>
       </ul>
     </section>
 
-    <section>
-      <h2>Key Technical Decisions</h2>
-      <ul>
-        <li>Designed discretised grid environment balancing realism and computational efficiency</li>
-        <li>Implemented experience replay and target networks for stable learning</li>
-        <li>Used parallel environment instances to accelerate training</li>
-        <li>Compared value-based (DDQN) vs policy-based (DDPG) approaches</li>
-      </ul>
+    <section class="pp-section">
+      <h2>TECHNICAL APPROACH</h2>
+      <p>
+        The agent observes an 8-dimensional state vector: normalised latitude/longitude, BFS hops to
+        goal, haversine distance, step fraction, last action bearing, progress this step, and visit
+        count at current hex. A binary action mask prevents stepping onto land, computed once and
+        cached per hex.
+      </p>
+      <p>
+        Architecture: two hidden layers (400→300 units) with LayerNorm (not BatchNorm — no batch
+        statistics dependency) and ReLU. Double DQN with a 1M-transition replay buffer, soft target
+        updates (τ = 0.001), and gradient clipping at L2 norm ≤ 1.0.
+      </p>
+      <p>
+        Reward shaping: potential-based (Ng et al., 1999) with Φ(s) = −BFS_dist/initial_dist,
+        eliminating non-Markovian reward hacking. Without this refactoring, episode reward climbed
+        from −773 to +165 over 1,500 episodes while success rate stayed at 0%.
+      </p>
+      <div class="pp-tags">
+        <span>DDQN</span><span>H3 HEXAGONAL GRID</span><span>POTENTIAL-BASED SHAPING</span>
+        <span>MARITIME RL</span><span>ADAPTIVE RESOLUTION</span><span>PYTHON</span>
+        <span>PYTORCH</span><span>MSC THESIS</span>
+      </div>
     </section>
 
-    <section>
-      <h2>Results</h2>
-      <p>
-        The trained agents successfully learned to navigate complex maritime
-        scenarios, reducing route time by 15-20% compared to baseline heuristics
-        while maintaining safety constraints.
-      </p>
+    <section class="pp-section">
+      <h2>RESEARCH POSTER · RLSS 2026</h2>
+      <p>Presented at the Reinforcement Learning Summer School 2026, ELLIS Unit Milan.</p>
+      <div class="poster-embed">
+        <iframe
+          src="../assets/rlss2026_poster_landscape.pdf"
+          title="RLSS 2026 Research Poster — Deep RL for Maritime Route Optimisation"
+          loading="lazy"
+        ></iframe>
+        <div class="poster-caption">
+          <span>RLSS 2026 · ELLIS UNIT MILAN · BILAL SALEEM</span>
+          <a href="../assets/rlss2026_poster_landscape.pdf" target="_blank">OPEN FULL SIZE →</a>
+        </div>
+      </div>
     </section>
 
-    <section>
-      <h2>Links</h2>
-      <p>
-        <a href="https://github.com/SmartGridsML" target="_blank">View source code on GitHub</a>
-      </p>
+    <section class="pp-section">
+      <h2>SUPERVISED BY</h2>
+      <p>Prof. Matthew Piggott &amp; Dr. Samaneh Mofrad · Imperial College London</p>
     </section>
 
-    <footer>
-      <p>
-        <a href="../index.html">Home</a> |
-        <a href="https://github.com/SmartGridsML">GitHub</a> |
-        <a href="https://www.linkedin.com/in/bilal-saleem-0379b0101/">LinkedIn</a>
-      </p>
-    </footer>
   </div>
+
+  <footer class="site-footer">
+    <p>© 2026 Bilal Saleem. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="../index.html">HOME</a>
+      <a href="https://github.com/SmartGridsML" target="_blank" rel="noopener">GITHUB</a>
+      <a href="https://www.linkedin.com/in/bilal-saleem-0379b0101/" target="_blank" rel="noopener">LINKEDIN</a>
+    </div>
+  </footer>
+
 </body>
 </html>
