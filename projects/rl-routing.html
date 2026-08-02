@@ -1,297 +1,512 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Deep RL for Maritime Route Optimisation — Bilal Saleem</title>
-  <meta name="description" content="MSc IRP at Imperial College London. DDQN agent on an adaptive H3 hexagonal grid for Mediterranean route optimisation. Presented at RLSS 2026, Milan." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=Syne:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../css/styles.css" />
-  <style>
-    /* Project page layout */
-    .project-page {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deep RL for Maritime Route Optimisation — Bilal Saleem</title>
+<meta name="description" content="MSc IRP at Imperial College London. DDQN agent on an adaptive H3 hexagonal grid for Mediterranean route optimisation. Presented at RLSS 2026, Milan." />
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,300;1,8..60,400&family=Source+Sans+3:wght@300;400;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ── Site nav ── */
+  :root {
+    --nav-bg: #0d2340;
+    --nav-height: 52px;
+  }
 
-    .project-page-nav {
-      padding: 1.75rem 0 0;
-      margin-bottom: 3rem;
-    }
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    height: var(--nav-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    background: var(--nav-bg);
+    border-bottom: 2px solid #12a899;
+  }
 
-    .project-page-nav a {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      transition: color 0.15s;
-    }
+  .site-nav a {
+    text-decoration: none;
+    font-family: 'Syne', sans-serif;
+  }
 
-    .project-page-nav a:hover {
-      color: var(--text);
-    }
+  .nav-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #fff;
+  }
 
-    .project-page-header {
-      padding-bottom: 3rem;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 3rem;
-    }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+  }
 
-    .project-page-eyebrow {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      color: var(--muted);
-      margin-bottom: 0.75rem;
-      display: flex;
-      gap: 1.25rem;
-      flex-wrap: wrap;
-      align-items: center;
-    }
+  .nav-links a {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.6);
+    transition: color 0.15s;
+  }
 
-    .project-page-eyebrow .badge {
-      background: var(--tag-bg);
-      color: var(--tag-text);
-      padding: 0.2rem 0.55rem;
-      border-radius: 3px;
-      font-size: 0.65rem;
-    }
+  .nav-links a:hover { color: #fff; }
 
-    .project-page-title {
-      font-family: "Fraunces", Georgia, serif;
-      font-size: clamp(1.8rem, 5vw, 2.8rem);
-      font-weight: 700;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-      margin-bottom: 1.25rem;
-    }
+  /* ── Top bar: back link + PDF download ── */
+  .page-bar {
+    background: #1a2f4a;
+    padding: 0.6rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
 
-    .project-page-subtitle {
-      font-size: 0.95rem;
-      color: var(--muted);
-      line-height: 1.7;
-      max-width: 58ch;
-      margin-bottom: 1.75rem;
-    }
+  .page-bar a {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    color: rgba(255,255,255,0.6);
+    transition: color 0.15s;
+  }
 
-    .project-page-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem 1.5rem;
-    }
+  .page-bar a:hover { color: #12a899; }
 
-    .project-page-links a {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      color: var(--text);
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 1px;
-      transition: border-color 0.15s;
-    }
+  .page-bar .pdf-link {
+    color: #12a899;
+    border: 1px solid #12a899;
+    padding: 0.25rem 0.75rem;
+    border-radius: 2px;
+    transition: background 0.15s, color 0.15s;
+  }
 
-    .project-page-links a:hover {
-      border-bottom-color: var(--text);
-    }
+  .page-bar .pdf-link:hover {
+    background: #12a899;
+    color: #0d2340;
+  }
 
-    /* Sections */
-    .pp-section {
-      margin-bottom: 2.75rem;
-      padding-bottom: 2.75rem;
-      border-bottom: 1px solid var(--border);
-    }
+  /* ── Poster wrapper ── */
+  /* ── A0 at 96 dpi: 3179 × 4494 px → scaled for screen at ~33% ── */
+  :root {
+    --scale: 0.335;
+    --w: 3179px;
+    --h: 4494px;
 
-    .pp-section:last-of-type {
-      border-bottom: none;
-    }
+    --navy:   #0d2340;
+    --teal:   #0a7c6e;
+    --teal-lt:#12a899;
+    --gold:   #c8922a;
+    --gold-lt:#f5ecd7;
+    --rule:   #ccd4db;
+    --bg:     #f7f8f9;
+    --white:  #ffffff;
+    --text:   #1a1a1a;
+    --muted:  #4a5560;
+    --caption:#5a6470;
 
-    .pp-section h2 {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      color: var(--muted);
-      margin-bottom: 1.25rem;
-    }
+    --serif:  'Source Serif 4', Georgia, serif;
+    --sans:   'Source Sans 3', Helvetica, sans-serif;
+    --mono:   'Source Code Pro', 'Courier New', monospace;
+  }
 
-    .pp-section p {
-      font-size: 0.93rem;
-      color: var(--muted);
-      line-height: 1.75;
-      max-width: 60ch;
-      margin-bottom: 0.85rem;
-    }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    .pp-section p:last-child {
-      margin-bottom: 0;
-    }
+  html, body {
+    background: #555;
+    font-family: var(--sans);
+  }
 
-    .pp-section ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
+  .poster-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 24px 20px 40px;
+  }
 
-    .pp-section ul li {
-      font-size: 0.93rem;
-      color: var(--muted);
-      line-height: 1.7;
-      padding: 0.35rem 0;
-      padding-left: 1rem;
-      position: relative;
-    }
+  .poster {
+    width:  calc(var(--w) * var(--scale));
+    height: calc(var(--h) * var(--scale));
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.55);
+    overflow: hidden;
+    position: relative;
+  }
 
-    .pp-section ul li::before {
-      content: "→";
-      position: absolute;
-      left: 0;
-      font-size: 0.8rem;
-      color: var(--border);
-    }
+  /* ═══════════════════ HEADER ═══════════════════ */
+  .header {
+    background: var(--navy);
+    color: var(--white);
+    padding: 22px 30px 18px;
+    flex-shrink: 0;
+    border-bottom: 4px solid var(--teal-lt);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .header-titles { flex: 1; }
+  .header-logos {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .logo-badge {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    text-align: right;
+    line-height: 1.4;
+  }
+  .logo-badge span { color: var(--teal-lt); }
 
-    /* Stat row */
-    .stat-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-      margin-bottom: 1.5rem;
-    }
+  h1 {
+    font-family: var(--serif);
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--white);
+    letter-spacing: -0.01em;
+  }
+  .subtitle {
+    font-family: var(--serif);
+    font-size: 10.5px;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(255,255,255,0.82);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+  .header-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 7px;
+    margin-top: 2px;
+  }
+  .header-meta-left {
+    font-size: 7.5px;
+    color: rgba(255,255,255,0.65);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+  }
+  .header-meta-right {
+    font-size: 7px;
+    color: rgba(255,255,255,0.5);
+    text-align: right;
+  }
+  .rlss-badge {
+    background: var(--teal);
+    color: white;
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+  }
 
-    .stat-cell {
-      padding: 1.25rem 1rem;
-      border-right: 1px solid var(--border);
-      text-align: center;
-    }
+  /* ═══════════════════ BODY ═══════════════════ */
+  .body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    gap: 0;
+  }
 
-    .stat-cell:last-child {
-      border-right: none;
-    }
+  .col {
+    flex: 1;
+    padding: 12px 13px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    overflow: hidden;
+    border-right: 1px solid var(--rule);
+  }
+  .col:last-child { border-right: none; }
 
-    .stat-num {
-      font-family: "Fraunces", Georgia, serif;
-      font-size: 2rem;
-      font-weight: 700;
-      line-height: 1;
-      margin-bottom: 0.35rem;
-    }
+  /* ═══════════════════ SECTION BLOCKS ═══════════════════ */
+  .section { display: flex; flex-direction: column; gap: 4px; }
 
-    .stat-label {
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-    }
+  .sec-head {
+    font-family: var(--sans);
+    font-size: 7.2px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--navy);
+    padding: 3px 7px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .sec-head .num {
+    background: var(--teal-lt);
+    color: var(--navy);
+    font-size: 6.5px;
+    font-weight: 800;
+    padding: 1px 4px;
+    border-radius: 1px;
+    letter-spacing: 0;
+  }
+  .sec-head.teal { background: var(--teal); }
+  .sec-head.gold-h { background: var(--gold); }
 
-    /* PDF embed */
-    .poster-embed {
-      margin-top: 1.25rem;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-      background: #f0f0ec;
-    }
+  .subsec-head {
+    font-family: var(--sans);
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--navy);
+    border-left: 2.5px solid var(--teal-lt);
+    padding-left: 5px;
+    margin-top: 3px;
+    margin-bottom: 1px;
+  }
+  .subsec-head.gold { border-color: var(--gold); color: var(--gold); }
 
-    .poster-embed iframe {
-      display: block;
-      width: 100%;
-      height: 480px;
-      border: none;
-    }
+  p, .body-text {
+    font-family: var(--serif);
+    font-size: 7.2px;
+    line-height: 1.55;
+    color: var(--text);
+  }
 
-    .poster-fallback {
-      display: none;
-      padding: 2rem;
-      text-align: center;
-    }
+  .small {
+    font-size: 6.6px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
 
-    .poster-caption {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 1rem;
-      border-top: 1px solid var(--border);
-      background: var(--bg);
-    }
+  /* ═══════════════════ CALLOUT ═══════════════════ */
+  .callout {
+    background: var(--gold-lt);
+    border-left: 3px solid var(--gold);
+    padding: 5px 8px;
+    font-family: var(--serif);
+    font-size: 7px;
+    font-style: italic;
+    color: #5a3c00;
+    line-height: 1.5;
+  }
+  .callout strong {
+    font-style: normal;
+    font-weight: 700;
+    color: #3a2600;
+  }
 
-    .poster-caption span {
-      font-size: 0.72rem;
-      color: var(--muted);
-      letter-spacing: 0.04em;
-    }
+  .callout-teal {
+    background: #e8f7f5;
+    border-left: 3px solid var(--teal);
+    color: #0a3d36;
+  }
 
-    .poster-caption a {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      color: var(--text);
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 1px;
-      transition: border-color 0.15s;
-    }
+  /* ═══════════════════ TABLE ═══════════════════ */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 6.6px;
+    font-family: var(--sans);
+  }
+  thead tr { background: var(--navy); color: var(--white); }
+  thead th {
+    padding: 3px 5px;
+    text-align: left;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    font-size: 6.2px;
+    text-transform: uppercase;
+  }
+  tbody tr { border-bottom: 1px solid var(--rule); }
+  tbody tr:nth-child(even) { background: rgba(0,0,0,0.025); }
+  tbody td { padding: 3px 5px; line-height: 1.4; color: var(--text); vertical-align: top; }
+  .td-check { color: var(--teal); font-weight: 700; }
+  .td-progress { color: var(--gold); font-weight: 600; }
 
-    .poster-caption a:hover {
-      border-bottom-color: var(--text);
-    }
+  /* ═══════════════════ CODE / MATH ═══════════════════ */
+  .math {
+    font-family: var(--mono);
+    font-size: 6.4px;
+    background: #eef0f3;
+    border: 1px solid #d0d5da;
+    padding: 5px 8px;
+    line-height: 1.7;
+    color: var(--navy);
+    white-space: pre-wrap;
+    border-radius: 1px;
+  }
 
-    /* Tags */
-    .pp-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-top: 1rem;
-    }
+  /* ═══════════════════ RULE ═══════════════════ */
+  hr { border: none; border-top: 1px solid var(--rule); margin: 2px 0; }
 
-    .pp-tags span {
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      color: var(--tag-text);
-      background: var(--tag-bg);
-      padding: 0.25rem 0.6rem;
-      border-radius: 3px;
-    }
+  /* ═══════════════════ BULLET LIST ═══════════════════ */
+  ul.poster-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  ul.poster-list li {
+    font-family: var(--serif);
+    font-size: 7px;
+    line-height: 1.5;
+    color: var(--text);
+    padding-left: 11px;
+    position: relative;
+  }
+  ul.poster-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--teal-lt);
+    font-family: var(--sans);
+    font-size: 6.5px;
+  }
 
-    @media (max-width: 640px) {
-      .project-page {
-        padding: 0 1.25rem;
-      }
+  ul.poster-list.disc li::before { content: '·'; font-size: 10px; top: -1px; color: var(--navy); }
 
-      .stat-row {
-        grid-template-columns: 1fr;
-      }
+  /* ═══════════════════ TWO-COL MINI GRID ═══════════════════ */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 8px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px 6px; }
 
-      .stat-cell {
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-        text-align: left;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 1rem;
-      }
+  .stat-box {
+    background: var(--navy);
+    color: white;
+    padding: 5px 7px;
+    text-align: center;
+    border-radius: 2px;
+  }
+  .stat-box .big {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--teal-lt);
+    line-height: 1;
+    display: block;
+  }
+  .stat-box .lbl {
+    font-size: 5.8px;
+    color: rgba(255,255,255,0.7);
+    margin-top: 2px;
+    line-height: 1.3;
+    font-family: var(--sans);
+    letter-spacing: 0.04em;
+  }
 
-      .stat-cell:last-child {
-        border-bottom: none;
-      }
+  .vs-box {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 4px;
+    align-items: center;
+  }
+  .vs-side {
+    background: #eef0f3;
+    border: 1px solid var(--rule);
+    padding: 4px 6px;
+    border-radius: 2px;
+  }
+  .vs-side.this { background: #e6f7f5; border-color: var(--teal); }
+  .vs-side h5 {
+    font-family: var(--sans);
+    font-size: 5.8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+  .vs-side.this h5 { color: var(--teal); }
+  .vs-side p { font-size: 6.2px; line-height: 1.45; }
+  .vs-divider {
+    font-family: var(--sans);
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--muted);
+    text-align: center;
+  }
 
-      .stat-num {
-        font-size: 1.5rem;
-        margin-bottom: 0;
-      }
+  /* ═══════════════════ FOOTER ═══════════════════ */
+  .footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.75);
+    padding: 7px 20px;
+    flex-shrink: 0;
+    border-top: 2px solid var(--teal-lt);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0 16px;
+  }
+  .footer-head {
+    font-family: var(--sans);
+    font-size: 6px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal-lt);
+    margin-bottom: 3px;
+    grid-column: 1 / -1;
+  }
+  .ref-item {
+    font-size: 5.8px;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.65);
+    font-family: var(--sans);
+    padding-bottom: 2px;
+  }
+  .ref-item strong { color: rgba(255,255,255,0.85); font-weight: 600; }
 
-      .poster-embed iframe {
-        height: 320px;
-      }
-    }
-  </style>
+  /* divider between col sections */
+  .col-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, var(--rule), transparent);
+    margin: 1px 0;
+    flex-shrink: 0;
+  }
+
+  .inline-tag {
+    display: inline-block;
+    background: var(--navy);
+    color: var(--teal-lt);
+    font-family: var(--mono);
+    font-size: 5.8px;
+    padding: 1px 4px;
+    border-radius: 2px;
+    margin: 0 1px;
+  }
+  .tag-teal {
+    background: var(--teal);
+    color: white;
+  }
+  .tag-gold {
+    background: var(--gold);
+    color: white;
+  }
+</style>
 </head>
 <body>
 
+  <!-- ── Site navigation ── -->
   <nav class="site-nav">
     <a href="../index.html" class="nav-name">Bilal Saleem</a>
     <div class="nav-links">
@@ -301,136 +516,325 @@
     </div>
   </nav>
 
-  <div class="project-page">
-
-    <div class="project-page-nav">
-      <a href="../index.html">← Back to portfolio</a>
+  <!-- ── Back + PDF download bar ── -->
+  <div class="page-bar">
+    <a href="../index.html">← BACK TO PORTFOLIO</a>
+    <div style="display:flex;gap:1rem;align-items:center;">
+      <a href="../assets/rlss2026_poster_landscape.pdf" target="_blank" class="pdf-link">VIEW PDF →</a>
+      <a href="../assets/rlss2026_poster_landscape.pdf" download class="pdf-link">DOWNLOAD PDF ↓</a>
     </div>
-
-    <header class="project-page-header">
-      <div class="project-page-eyebrow">
-        <span>MSC IRP · IMPERIAL COLLEGE LONDON · 2025</span>
-        <span class="badge">RLSS 2026 · MILAN</span>
-      </div>
-      <h1 class="project-page-title">Deep RL for Maritime Route Optimisation: A Hexagonal Grid Approach</h1>
-      <p class="project-page-subtitle">
-        MSc thesis building a DDQN agent on an adaptive H3 hexagonal grid to navigate three Mediterranean
-        sea routes — eliminating the geometric artefacts of rectangular grids and enabling genuine
-        strait and canal navigation. Presented as a research poster at the Reinforcement Learning Summer
-        School (RLSS) 2026 at ELLIS Unit Milan.
-      </p>
-      <div class="project-page-links">
-        <a href="https://github.com/SmartGridsML" target="_blank" rel="noopener">GITHUB →</a>
-        <a href="../assets/rlss2026_poster_landscape.pdf" target="_blank">VIEW POSTER →</a>
-        <a href="../assets/rlss2026_poster_landscape.pdf" download>DOWNLOAD PDF →</a>
-      </div>
-    </header>
-
-    <section class="pp-section">
-      <h2>RESULTS</h2>
-      <div class="stat-row">
-        <div class="stat-cell">
-          <div class="stat-num">100%</div>
-          <div class="stat-label">MARSEILLE → PORT TORRES</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-num">99%</div>
-          <div class="stat-label">MARSEILLE → CAGLIARI</div>
-        </div>
-        <div class="stat-cell">
-          <div class="stat-num">100%</div>
-          <div class="stat-label">MARSEILLE → PIRAEUS</div>
-        </div>
-      </div>
-      <p>
-        All three Mediterranean routes solved. The long-route Piraeus problem (107 BFS hops) required
-        a BFS-seeded replay buffer to break the cold-start deadlock — without it, Q-values converge
-        to a uniform signal and the agent never leaves its starting region.
-      </p>
-    </section>
-
-    <section class="pp-section">
-      <h2>THE PROBLEM</h2>
-      <p>
-        International shipping accounts for ~3% of global greenhouse gas emissions. The IMO's 2023
-        revised strategy targets net-zero by 2050. Voyage optimisation — choosing the most fuel-efficient
-        route through dynamic, weather-varying ocean conditions — is one of the most tractable near-term
-        levers available to fleet operators.
-      </p>
-      <p>
-        Classical methods (A*, Dijkstra, Tabu Search) plan once and cannot adapt mid-voyage. RL agents
-        learn a policy that updates online as new forecasts arrive. The state-of-the-art benchmark
-        (Latinopoulos et al., JMSE 2025) achieves 8.7–12.6% fuel savings using DDQN/DDPG on a
-        rectangular grid — but that grid has two structural limitations this project addresses.
-      </p>
-    </section>
-
-    <section class="pp-section">
-      <h2>THE INNOVATION: HEXAGONAL GRID</h2>
-      <ul>
-        <li>Rectangular grids introduce a geometric artefact: diagonal steps are 41% longer than cardinal steps, forcing the Q-network to learn a geometry correction rather than navigational value.</li>
-        <li>H3 hexagonal grid: all 6 neighbours are equidistant — always. 6 actions, all equal cost. Q(s, "move NE") = Q(s, "move N") under equivalent progress.</li>
-        <li>Adaptive resolution: open ocean at res-5 (~28 km cell-to-cell), coastal zones at res-6 (~10 km), making the Strait of Bonifacio traversable and the Corinth Canal navigable end-to-end — no teleportation shortcuts.</li>
-        <li>Result: 10,937 water/coastal cells across the Mediterranean, with polygon-level (not centroid) land classification.</li>
-      </ul>
-    </section>
-
-    <section class="pp-section">
-      <h2>TECHNICAL APPROACH</h2>
-      <p>
-        The agent observes an 8-dimensional state vector: normalised latitude/longitude, BFS hops to
-        goal, haversine distance, step fraction, last action bearing, progress this step, and visit
-        count at current hex. A binary action mask prevents stepping onto land, computed once and
-        cached per hex.
-      </p>
-      <p>
-        Architecture: two hidden layers (400→300 units) with LayerNorm (not BatchNorm — no batch
-        statistics dependency) and ReLU. Double DQN with a 1M-transition replay buffer, soft target
-        updates (τ = 0.001), and gradient clipping at L2 norm ≤ 1.0.
-      </p>
-      <p>
-        Reward shaping: potential-based (Ng et al., 1999) with Φ(s) = −BFS_dist/initial_dist,
-        eliminating non-Markovian reward hacking. Without this refactoring, episode reward climbed
-        from −773 to +165 over 1,500 episodes while success rate stayed at 0%.
-      </p>
-      <div class="pp-tags">
-        <span>DDQN</span><span>H3 HEXAGONAL GRID</span><span>POTENTIAL-BASED SHAPING</span>
-        <span>MARITIME RL</span><span>ADAPTIVE RESOLUTION</span><span>PYTHON</span>
-        <span>PYTORCH</span><span>MSC THESIS</span>
-      </div>
-    </section>
-
-    <section class="pp-section">
-      <h2>RESEARCH POSTER · RLSS 2026</h2>
-      <p>Presented at the Reinforcement Learning Summer School 2026, ELLIS Unit Milan.</p>
-      <div class="poster-embed">
-        <iframe
-          src="../assets/rlss2026_poster_landscape.pdf"
-          title="RLSS 2026 Research Poster — Deep RL for Maritime Route Optimisation"
-          loading="lazy"
-        ></iframe>
-        <div class="poster-caption">
-          <span>RLSS 2026 · ELLIS UNIT MILAN · BILAL SALEEM</span>
-          <a href="../assets/rlss2026_poster_landscape.pdf" target="_blank">OPEN FULL SIZE →</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="pp-section">
-      <h2>SUPERVISED BY</h2>
-      <p>Prof. Matthew Piggott &amp; Dr. Samaneh Mofrad · Imperial College London</p>
-    </section>
-
   </div>
 
-  <footer class="site-footer">
-    <p>© 2026 Bilal Saleem. All rights reserved.</p>
-    <div class="footer-links">
-      <a href="../index.html">HOME</a>
-      <a href="https://github.com/SmartGridsML" target="_blank" rel="noopener">GITHUB</a>
-      <a href="https://www.linkedin.com/in/bilal-saleem-0379b0101/" target="_blank" rel="noopener">LINKEDIN</a>
+  <!-- ── Poster ── -->
+  <div class="poster-wrap">
+  <div class="poster">
+
+  <!-- ══════════════════ HEADER ══════════════════ -->
+  <div class="header">
+    <div class="header-top">
+      <div class="header-titles">
+        <h1>Deep Reinforcement Learning for Weather-Aware Maritime Route Optimisation:<br>A Hexagonal Grid Approach</h1>
+        <p class="subtitle">From heuristic baselines to a DDQN agent on an isotropic H3 grid over the Mediterranean Sea</p>
+      </div>
+      <div class="header-logos">
+        <div class="logo-badge">
+          <span>Imperial College London</span><br>
+          MSc Environmental Science &amp; Engineering
+        </div>
+        <div class="rlss-badge">RLSS 2026 · Milan</div>
+      </div>
     </div>
-  </footer>
+    <div class="header-meta">
+      <div class="header-meta-left">
+        Author: Bilal Saleem &nbsp;|&nbsp; Supervisor: Prof. Matthew Piggott &amp; Dr. Samaneh Mofrad &nbsp;|&nbsp; Imperial College London
+      </div>
+      <div class="header-meta-right">
+        ELLIS Unit Milan &nbsp;·&nbsp; Reinforcement Learning Summer School 2026
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════ BODY ══════════════════ -->
+  <div class="body">
+
+    <!-- ══════ COLUMN 1: PROBLEM & BASELINES ══════ -->
+    <div class="col">
+
+      <div class="section">
+        <div class="sec-head"><span class="num">1</span> The Challenge: Decarbonising Maritime Shipping</div>
+        <p>International shipping accounts for approximately <strong>3% of global greenhouse gas emissions</strong>. The IMO's 2023 revised strategy targets net-zero emissions by 2050, with an interim 20–30% reduction by 2030 relative to 2008 levels. Voyage optimisation — choosing the safest, most fuel-efficient route through dynamic, weather-varying ocean conditions — is one of the most tractable near-term levers available to fleet operators today.</p>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><span class="num">2</span> Gap in Current Approaches</div>
+        <p>Classical methods (A*, Dijkstra, Tabu Search) are fast and interpretable, but <strong>static</strong>: they plan once and cannot adapt to evolving weather mid-voyage. Reinforcement learning agents, by contrast, learn a policy that can be continuously updated online as new forecasts arrive.</p>
+        <br>
+        <p><strong>Latinopoulos et al. (JMSE, 2025)</strong> is the state of the art: DDQN and DDPG agents on a uniform 0.25° lat/lon grid, achieving 8.7–12.6% fuel savings over a shortest-path baseline on a real Mediterranean route. It is a strong result — and it was this paper that motivated this project. But it has two structural limitations:</p>
+        <br>
+        <ul class="poster-list">
+          <li>The uniform <strong>28 km grid</strong> cannot navigate straits narrower than one cell. Canals are handled with teleportation shortcuts, not actual navigation.</li>
+          <li>The <strong>rectangular grid introduces diagonal bias</strong> (NE step = 41% longer than N step), forcing the Q-network to learn a geometry correction.</li>
+        </ul>
+      </div>
+
+      <div class="callout">
+        <strong>Research Question:</strong> Can a DDQN agent on an adaptive H3 hexagonal grid — with isotropic movement and genuine strait/canal navigation — match or exceed the Latinopoulos fuel savings, validated across three Mediterranean routes of increasing difficulty?
+      </div>
+
+      <div class="section">
+        <div class="sec-head teal"><span class="num">3</span> Step 1 — Heuristic Baselines</div>
+        <p class="small">Before training any neural network, a full suite of heuristic pathfinding algorithms was implemented on the same routes, mirroring the baseline comparison in Latinopoulos et al.</p>
+        <br>
+        <div class="subsec-head">Three Test Routes (increasing difficulty)</div>
+        <table>
+          <thead><tr><th>Route</th><th>Distance</th><th>Challenge</th></tr></thead>
+          <tbody>
+            <tr><td>Port Torres ↔ Marseille</td><td>371 km</td><td>Open water, Sardinia–France</td></tr>
+            <tr><td>Cagliari ↔ Marseille</td><td>552 km</td><td>Longer, coastal navigation</td></tr>
+            <tr><td>Piraeus ↔ Marseille</td><td>1,647 km</td><td>Greece–France via Corinth Canal</td></tr>
+          </tbody>
+        </table>
+        <br>
+        <div class="subsec-head">Heuristic Methods Implemented</div>
+        <table>
+          <thead><tr><th>Method</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Searoute API</td><td>Industry maritime routing service (reference baseline)</td></tr>
+            <tr><td>Dijkstra (H3 graph)</td><td>Optimal shortest path on hexagonal grid</td></tr>
+            <tr><td>A* (H3 graph)</td><td>Haversine heuristic, 20 kt cruise speed</td></tr>
+            <tr><td>Tabu Search</td><td>Meta-heuristic, 500 iterations, avoids cycling; best heuristic fuel performance (−13.8% vs baseline)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        "Tabu Search saves ~14% fuel but commits to a plan at departure. <strong>An RL agent keeps learning — even during the voyage.</strong>"
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><span class="num">4</span> Ensuring Reproducibility</div>
+        <div class="subsec-head">Three Sources of Non-Determinism Fixed</div>
+        <ul class="poster-list">
+          <li><strong>Neighbour ordering:</strong> H3's <span class="inline-tag">grid_ring()</span> returns neighbours in unspecified order. Fix: sorted by bearing (clockwise from North), hex-ID as tiebreaker. Cached per cell. Action semantics stable across entire training run.</li>
+          <li><strong>Global RNG state:</strong> NumPy and Python's random module seeded at grid construction (seed=42) and at each episode reset. Environment transitions fully reproducible for a given seed.</li>
+          <li><strong>BFS potential function:</strong> Precomputed once after canal integration, cached as a static dict. Every episode uses the identical distance-to-goal mapping — the reward signal does not drift.</li>
+        </ul>
+        <p class="small" style="margin-top:3px;">Combined effect: given the same seed, two training runs produce identical environment transitions. Variance in results reflects only policy learning, not environment noise.</p>
+      </div>
+
+    </div>
+
+    <!-- ══════ COLUMN 2: METHODOLOGY ══════ -->
+    <div class="col">
+
+      <div class="section">
+        <div class="sec-head"><span class="num">5</span> Step 2 — Rethinking the Grid: Rectangles → Adaptive Hexagons</div>
+
+        <div class="vs-box">
+          <div class="vs-side">
+            <h5>Latinopoulos 0.25° Grid</h5>
+            <p>Uniform 28 km per cell everywhere. Aligns with ERA5 data. But: diagonal step = √2 × cardinal step = 1.41× longer. 8 actions with <em>two distinct step lengths</em>. Q-values encode a geometric artefact. Straits &lt;28 km inaccessible. Corinth Canal: teleportation shortcut.</p>
+          </div>
+          <div class="vs-divider">→</div>
+          <div class="vs-side this">
+            <h5>Adaptive H3 Hexagonal Grid</h5>
+            <p>All 6 neighbours equidistant — always. 6 actions, all equal cost. Q(s,"move NE") = Q(s,"move N") under same progress. Reward shaping geometrically unambiguous. Coastal resolution 3.7 km. Straits and canals navigable.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="sec-head teal"><span class="num">6</span> Adaptive Multi-Resolution Design</div>
+        <table>
+          <thead><tr><th>Zone</th><th>Resolution</th><th>Cell size</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td>Open ocean</td><td>Res-5</td><td>~9.85 km edge / ~28 km c-to-c</td><td>Matches Latinopoulos. Efficient BFS.</td></tr>
+            <tr><td>Within 40 km of coast</td><td>Res-6</td><td>~3.7 km edge / ~10 km c-to-c</td><td>Straits, canal approaches, harbours become navigable corridors</td></tr>
+          </tbody>
+        </table>
+        <p class="small" style="margin-top:4px;">The adaptive boundary is computed automatically: any res-5 water cell adjacent to a land cell is replaced by its 7 res-6 children, each independently classified by polygon land-fraction (threshold ≥ 0.20 → excluded). This is a polygon-level check, not a centroid check. <strong>Result: 10,937 water/coastal cells</strong> across the Mediterranean.</p>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><span class="num">7</span> Corinth Canal — Explicit Modelling, Not Teleportation</div>
+        <p class="small">The 6.3 km wide, 6 km long Corinth Canal connects the Aegean to the Ionian. Rather than teleporting the agent, we model it as a navigable res-6 hex corridor extracted from OpenStreetMap geometry:</p>
+        <ul class="poster-list" style="margin-top:3px;">
+          <li>Sample canal centreline at ~80 m resolution</li>
+          <li>Snap to res-6 hexes → compact corridor of water cells</li>
+          <li>Add ring-1 buffer (neighbouring hexes) for stability</li>
+          <li>Bridge corridor endpoints to open-sea res-5 cells with explicit bidirectional edges</li>
+        </ul>
+        <p class="small" style="margin-top:3px;">The agent learns to enter, traverse, and exit the canal as part of its policy — <em>no special-case logic in the reward or step function</em>. Other straits handled automatically by res-6 refinement: Bonifacio (~12 km), Gibraltar (~14 km), Messina (~3 km, borderline).</p>
+      </div>
+
+      <div class="section">
+        <div class="sec-head teal"><span class="num">8</span> MDP Formulation &amp; State Space</div>
+        <div class="subsec-head">MDP: ⟨S, A, P, R, γ⟩</div>
+        <div class="math">S : ℝ⁸ observation vector (below)     γ = 0.99
+A : 7 discrete actions               P : deterministic graph transitions
+R : potential-based shaped reward    Episodic, finite-horizon</div>
+        <div class="subsec-head" style="margin-top:5px;">State Vector s ∈ ℝ⁸ (all normalised)</div>
+        <table>
+          <thead><tr><th>Dim</th><th>Feature</th><th>Range</th></tr></thead>
+          <tbody>
+            <tr><td>φ̂</td><td>Normalised latitude</td><td>[0, 1]</td></tr>
+            <tr><td>λ̂</td><td>Normalised longitude</td><td>[0, 1]</td></tr>
+            <tr><td>d̂<sub>BFS</sub></td><td>BFS hops to goal / initial hops</td><td>[0, 1]</td></tr>
+            <tr><td>d̂<sub>hav</sub></td><td>Haversine dist / initial dist</td><td>[0, 1]</td></tr>
+            <tr><td>t<sub>frac</sub></td><td>Step count / max steps</td><td>[0, 1]</td></tr>
+            <tr><td>ψ̂</td><td>Last action bearing / 360°</td><td>[0, 1]</td></tr>
+            <tr><td>Δd̂</td><td>Progress this step (normalised)</td><td>[−1, 1]</td></tr>
+            <tr><td>v̂</td><td>Visit count at current hex (norm)</td><td>[0, 1]</td></tr>
+          </tbody>
+        </table>
+        <p class="small" style="margin-top:3px;"><strong>Action space:</strong> 7 discrete actions — 6 H3 ring-1 neighbours sorted clockwise from North + STAY. Binary action mask m ∈ {0,1}⁷ prevents stepping onto land; computed once and cached per hex.</p>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><span class="num">9</span> Step 3 — Reward Engineering</div>
+        <div class="subsec-head gold">Old Reward — Reward Hacking Failure</div>
+        <div class="math">r_old = r_progress_km + r_step_efficiency + r_shaping + r_penalties + r_terminal
+r_step_efficiency: (max_steps − step_count)/max_steps × 3.0  ← NON-MARKOVIAN
+r_pingpong/loop3:  −10.0  ← 100× larger than refactored
+Clip: [−5.0, +3.0]  (asymmetric → agent exploits oscillation)</div>
+        <p class="small" style="margin-top:3px;"><strong>Failure on Piraeus:</strong> reward rose from −773 → +315/episode over 1,500 episodes while success rate stayed at <strong>exactly 0%</strong>. Agent farmed the progress signal through oscillation. The non-Markovian step-efficiency term violated the MDP assumption entirely.</p>
+
+        <div class="subsec-head" style="margin-top:5px;">Refactored Reward — Potential-Based Shaping (Ng et al., 1999)</div>
+        <div class="math">r(s,a,s') = α·[Φ(s') − Φ(s)]  +  r_terminal  +  Σ r_guardrails
+
+Φ(s) = −BFS_dist(s, goal) / initial_BFS_dist     α = 25.0
+r_terminal = +10.0  iff  BFS_dist(s', goal) ≤ 2 hops  (sparse)
+
+Guardrails (route-normalised by λ = min(0.4, BFS_hops/100)):
+  time:    −0.05·λ/step   land: −1.0·λ   ping-pong: −0.1
+  3-cycle: −0.2           revisit: −0.05·count (cap −1.0)
+λ: PortTorres=0.133  Cagliari=0.197  Piraeus=0.400 (capped)</div>
+        <div class="callout callout-teal" style="margin-top:4px;">
+          <strong>Evidence:</strong> Cross-reward validation on Port Torres — policy trained on refactored reward, tested on old reward: <strong>100% success</strong>. Policy trained on old reward, tested on old reward: <strong>49.7% success</strong>. The refactored policy generalises; the old policy is fragile.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══════ COLUMN 3: RESULTS & FUTURE WORK ══════ -->
+    <div class="col">
+
+      <div class="section">
+        <div class="sec-head teal"><span class="num">10</span> Double DQN Architecture</div>
+        <div class="math">Target:  y_t = r_t + γ · Q_θ⁻(s_{t+1}, argmax_{a': m_{a'}=1} Q_θ(s_{t+1},a'))
+Loss:    ℒ(θ) = 𝔼_𝒟 [SmoothL1(y_t − Q_θ(s_t, a_t))]   δ=1.0
+
+Network: ℝ⁸ → [Linear(8→400) + LayerNorm + ReLU]
+              → [Linear(400→300) + LayerNorm + ReLU]
+              → Linear(300→7)
+LayerNorm (not BatchNorm): no dependency on batch statistics.</div>
+        <table style="margin-top:4px;">
+          <thead><tr><th>Hyperparameter</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Optimizer</td><td>Adam, lr = 5×10⁻⁴</td></tr>
+            <tr><td>Replay buffer</td><td>1,000,000 transitions (numpy ring buffer)</td></tr>
+            <tr><td>Mini-batch</td><td>128 transitions, sampled uniformly</td></tr>
+            <tr><td>Gradient clip</td><td>‖∇θ‖₂ ≤ 1.0</td></tr>
+            <tr><td>Exploration</td><td>ε-greedy, ε: 1.0 → 0.01 (×0.995/ep)</td></tr>
+            <tr><td>Soft update</td><td>τ = 0.001, every 5 gradient steps</td></tr>
+            <tr><td>Discount γ</td><td>0.99</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><span class="num">11</span> Optuna Bayesian Hyperparameter Search</div>
+        <p class="small">The reward function has <strong>13 interacting parameters</strong>. Manual grid search is infeasible. Optuna's TPE sampler (Tree-structured Parzen Estimator) was run in parallel on NVIDIA L4 GPUs via Modal cloud compute (~$50 / 50 trials). Search space: progress_scale [8–30], goal_reward [20–100], land_penalty, ping-pong/loop3 coefficients, revisit_multiplier, time_penalty, gamma [0.93–0.999], clip bounds.</p>
+        <p class="small" style="margin-top:3px;"><strong>Fitness:</strong> success_rate − 0.2×clipping_rate − 0.05×orbit_rate. H3 grid built once per worker; only <span class="inline-tag">env.reset()</span> between trials.</p>
+      </div>
+
+      <div class="section">
+        <div class="sec-head teal"><span class="num">12</span> Curriculum Learning — Piraeus (1,647 km)</div>
+        <p class="small"><strong>Cold-start problem:</strong> random-walk exploration covers ≈√500 ≈ 22 hops in a 500-step episode; the goal is 107 hops away — effectively invisible.</p>
+        <table style="margin-top:4px;">
+          <thead><tr><th>Stage</th><th>Segment</th><th>Steps</th><th>Episodes</th><th>Threshold</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Origin → Midpoint</td><td>150</td><td>200</td><td>80%</td></tr>
+            <tr><td>2</td><td>Midpoint → Destination</td><td>150</td><td>200</td><td>80%</td></tr>
+            <tr><td>…N</td><td>Segment pairs combined</td><td>↑</td><td>↑</td><td>80%</td></tr>
+            <tr><td>Final</td><td>Full route</td><td>300</td><td>400</td><td>70%</td></tr>
+          </tbody>
+        </table>
+        <p class="small" style="margin-top:3px;"><strong>BFS-seeded replay buffer</strong> pre-populates with optimal trajectories, bootstrapping Q-values before exploration begins.</p>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><span class="num">13</span> Results</div>
+        <div class="three-col" style="margin-bottom:5px;">
+          <div class="stat-box"><span class="big">100%</span><span class="lbl">Port Torres → Marseille<br>371 km · 1,500 ep</span></div>
+          <div class="stat-box"><span class="big">99%</span><span class="lbl">Cagliari → Marseille<br>552 km · 1,500 ep</span></div>
+          <div class="stat-box" style="background:#3a5070;"><span class="big" style="color:#f5c84a;font-size:11px;">In prog.</span><span class="lbl">Piraeus → Marseille<br>1,647 km · 3,000 ep</span></div>
+        </div>
+
+        <div class="subsec-head gold">Piraeus — Root Causes Identified &amp; Fixed</div>
+        <ul class="poster-list">
+          <li><strong>Bug 1 — goal_threshold = 0:</strong> Required landing on 1 exact hex out of 10,937. P(cold-start success in 500 steps) ≈ 1.6×10⁻⁵. <em>Fix:</em> threshold = 2 hops (19 hexes within ~56 km count as success).</li>
+          <li><strong>Bug 2 — Canal exit asymmetry:</strong> res-6 canal hexes could not exit to res-5 open sea. BFS debug confirmed a hard wall at exactly 54 hops — 661 episodes reached that boundary; zero crossed it in 1,500 episodes. <em>Fix:</em> symmetric bidirectional cross-resolution edges using max(res5_edge, res6_edge) threshold.</li>
+        </ul>
+
+        <div class="subsec-head" style="margin-top:5px;">Comparison with Latinopoulos et al. (2025)</div>
+        <table>
+          <thead><tr><th>Feature</th><th>Latinopoulos (2025)</th><th>This Work</th></tr></thead>
+          <tbody>
+            <tr><td>Grid type</td><td>Orthogonal lat/lon</td><td>H3 hexagonal</td></tr>
+            <tr><td>Resolution</td><td>0.25° uniform (~28 km)</td><td>Adaptive res-5/6 (10–28 km)</td></tr>
+            <tr><td>Coastal resolution</td><td>28 km everywhere</td><td>3.7 km near coastline</td></tr>
+            <tr><td>Canal handling</td><td>Teleportation shortcut</td><td>Explicit corridor + BFS</td></tr>
+            <tr><td>Neighbour distances</td><td>8 dirs, unequal</td><td>6 dirs, always equal</td></tr>
+            <tr><td>Action space</td><td>285 (speed × heading)</td><td>7 discrete directions</td></tr>
+            <tr><td>Routes validated</td><td>1 route</td><td>2 routes (100%, 99%)</td></tr>
+            <tr><td>DDQN fuel saving</td><td>−8.7% vs baseline</td><td>To be evaluated</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <div class="sec-head teal"><span class="num">14</span> Weather Pipeline &amp; Future Work</div>
+        <div class="subsec-head">ERA5 Weather Pipeline — Built, Integration Next</div>
+        <p class="small"><strong>Data:</strong> ECMWF ERA5 (Copernicus CDS) — 10m wind (U,V), significant wave height, mean wave direction &amp; period, SST, MSLP. Resolution: 0.25°×0.25°, 3-hourly. Coverage: 34°N–46°N, −6°E–30°E. <strong>Processing:</strong> WeatherProcessor — load GRIB, spatial interpolation onto H3 nodes, temporal interpolation for ship ETA at each hex, cache as NetCDF.</p>
+        <p class="small" style="margin-top:3px;"><strong>Integration plan:</strong> (1) Add weather features to 8D state vector; (2) Wave-heading penalty; (3) Validate weather-aware vs weather-agnostic agent; (4) Online fine-tuning every 6 hours (Latinopoulos: ~15 min GPU update — viable for operational shipping).</p>
+
+        <div class="subsec-head" style="margin-top:4px;">Neural Fuel Oil Consumption Model (Proposed)</div>
+        <p class="small">Current limitation (shared with Latinopoulos): fuel modelled with fixed analytical formula. Real ships burn non-linearly as a function of sea state, heading, loading, and hull fouling. <strong>Proposed:</strong> MLP or LSTM trained on AIS voyage logs + ERA5 (no proprietary data required). Inputs: trim, speed, currents, wave height/direction/period, SST. Output: L/hour. Integration: replace <em>r_fuel = fixed × distance</em> with <em>r_fuel = FOC_model(state, action, weather) × Δt</em> — closing the loop so the agent directly optimises real predicted fuel burn.</p>
+      </div>
+
+      <div class="section">
+        <div class="sec-head"><span class="num">15</span> Conclusions</div>
+        <ul class="poster-list">
+          <li><strong>H3 hexagons eliminate diagonal bias</strong> — Q-values directly encode navigational value, not a geometry correction artefact. All 6 moves are equidistant.</li>
+          <li><strong>Adaptive resolution unlocks coastal navigation</strong> — 3.7 km res-6 cells make the Strait of Bonifacio (12 km) and Corinth Canal (6 km) naturally navigable without teleportation.</li>
+          <li><strong>Reward hacking is real and detectable</strong> — potential-based shaping (Ng et al. 1999) with a BFS-derived potential eliminates this class of failure by construction.</li>
+          <li><strong>Penalty scaling is not optional</strong> — the same values that work on 371 km produce an 818% burden on 1,647 km; λ = min(0.4, BFS_hops/100) makes reward portable across route lengths.</li>
+          <li><strong>Short and medium routes are solved</strong> — Port Torres 100%, Cagliari 99%. Piraeus bugs identified, fixed, re-run in progress.</li>
+          <li><strong>The remaining work is integration, not invention</strong> — weather pipeline built, canal model corrected, reward validated, Optuna infrastructure proven.</li>
+        </ul>
+
+        <div class="callout" style="margin-top:5px;">
+          "The biggest lesson: in maritime DRL, <strong>the environment is the algorithm</strong>. Getting the grid geometry, canal topology, and penalty scaling right matters more than the network architecture."
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════ FOOTER — REFERENCES ══════════════════ -->
+  <div class="footer">
+    <div class="footer-head">References</div>
+    <div class="ref-item"><strong>[1]</strong> Latinopoulos, C. et al. (2025). Deep Reinforcement Learning for Ship Routing Optimisation in Dynamic Maritime Environments. <em>J. Mar. Sci. Eng.</em> 13, 902. — Primary benchmark: DDQN+DDPG on orthogonal grid, 8.7–12.6% fuel savings.</div>
+    <div class="ref-item"><strong>[2]</strong> Van Hasselt, H., Guez, A., Silver, D. (2016). Deep Reinforcement Learning with Double Q-Learning. <em>AAAI</em>, 30, 2094–2100. — Double DQN eliminates Q-value overestimation bias.</div>
+    <div class="ref-item"><strong>[3]</strong> Ng, A.Y., Harada, D., Russell, S. (1999). Policy Invariance Under Reward Transformations: Theory and Application to Reward Shaping. <em>ICML</em>. — Theoretical basis for potential-based reward shaping.</div>
+    <div class="ref-item"><strong>[4]</strong> Uber Technologies, Inc. (2018). H3 — Hexagonal Hierarchical Geospatial Indexing System. San Francisco, CA. — The hexagonal grid system used throughout this work.</div>
+    <div class="ref-item"><strong>[5]</strong> Du, Y., Chen, Y., Li, X., Schönborn, A., Sun, Z. (2022). Data fusion and machine learning for ship fuel efficiency modeling. <em>Commun. Transp. Res.</em> 2. — Motivates the proposed neural FOC model.</div>
+    <div class="ref-item"><strong>[6]</strong> IMO (2023). MEPC.80(WP.12). 2023 IMO Strategy on Reduction of GHG Emissions from Ships. International Maritime Organization, London. — Regulatory context and 2050 net-zero target.</div>
+  </div>
+
+  </div><!-- .poster -->
+  </div><!-- .poster-wrap -->
 
 </body>
 </html>
